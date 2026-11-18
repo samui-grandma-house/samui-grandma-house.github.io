@@ -4,9 +4,9 @@
 <!-- Keep visibility rules with the setting so cached external assets cannot expose the site. -->
 <style>
 #site-unavailable { display: none; }
-html[data-site-offline="false"] body > :not(#site-unavailable) { display: none !important; }
-html[data-site-offline="false"] body { margin: 0; background: #faf7ed !important; color: #243e34 !important; font: 16px/1.55 Arial, sans-serif; }
-html[data-site-offline="false"] #site-unavailable {
+html[data-site-offline='true'] body > :not(#site-unavailable) { display: none !important; }
+html[data-site-offline='true'] body { margin: 0; background: #faf7ed !important; color: #243e34 !important; font: 16px/1.55 Arial, sans-serif; }
+html[data-site-offline='true'] #site-unavailable {
   display: grid;
   place-items: center;
   min-height: 100svh;
