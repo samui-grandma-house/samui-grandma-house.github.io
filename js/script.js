@@ -1,3 +1,10 @@
+(() => {
+if (document.documentElement.dataset.siteOffline === 'true') {
+  document.title = 'Website unavailable';
+  document.querySelector('meta[name="description"]').content = 'This website is currently unavailable.';
+  return;
+}
+
 const nav = document.querySelector('nav');
 const menu = document.querySelector('#menu');
 const language = document.querySelector('#language');
@@ -94,3 +101,5 @@ language.onchange = async () => {
 applyTheme(localStorage.getItem('theme') || 'light');
 const saved = localStorage.getItem('samui-language');
 setLang(Object.hasOwn(locales,saved) ? saved : 'en');
+
+})();
