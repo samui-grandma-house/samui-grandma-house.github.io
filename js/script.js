@@ -13,7 +13,7 @@ const dialog = document.querySelector('dialog');
 for (const id of ['home','info','gallery','houses','studio','reviews','map','contacts']) {
   const link = document.createElement('a');
   link.href = '#' + id;
-  link.dataset.i18n = id;
+  link.dataset.i18n = id === 'studio' ? 'studios' : id;
   nav.append(link);
 }
 function toggleMenu(open) {
@@ -42,6 +42,39 @@ for (const [file,key] of photos) {
 }
 dialog.querySelector('button').onclick = () => dialog.close();
 dialog.onclick = event => { if (event.target === dialog) dialog.close(); };
+// Replace these placeholder paths individually when the final five photos are ready.
+const stayCollections = {
+  oneBedroom: ['garden-house', 'garden-house', 'garden-house', 'garden-house', 'garden-house'],
+  twoBedroom: ['house-living', 'house-living', 'house-living', 'house-living', 'house-living'],
+  studios: ['studio-living', 'studio-living', 'studio-living', 'studio-living', 'studio-living']
+};
+const collectionDialog = document.querySelector('#stay-collection');
+const collectionPhotos = collectionDialog.querySelector('.collection-photos');
+for (const button of document.querySelectorAll('[data-collection]')) {
+  button.onclick = () => {
+    const key = button.dataset.collection;
+    const title = locales[document.documentElement.lang][key];
+    collectionDialog.querySelector('h2').textContent = title;
+    collectionPhotos.replaceChildren(...stayCollections[key].map((file, index) => {
+      const figure = document.createElement('figure');
+      const photo = new Image();
+      photo.src = 'img/' + file + '.jpg';
+      photo.alt = title + ' — ' + (index + 1) + ' / 5';
+      photo.loading = index ? 'lazy' : 'eager';
+      const caption = document.createElement('figcaption');
+      caption.textContent = (index + 1) + ' / 5';
+      figure.append(photo, caption);
+      return figure;
+    }));
+    collectionDialog.showModal();
+    collectionDialog.scrollTop = 0;
+  };
+}
+collectionDialog.querySelector('button').onclick = () => collectionDialog.close();
+collectionDialog.addEventListener('click', event => {
+  const bounds = collectionDialog.getBoundingClientRect();
+  if (event.target === collectionDialog && (event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom)) collectionDialog.close();
+});
 function setLang(value) {
   const copy = locales[value] || locales.en;
   document.documentElement.lang = value;
@@ -49,6 +82,7 @@ function setLang(value) {
   document.querySelectorAll('[data-alt]').forEach(el => { el.alt = copy[el.dataset.alt]; });
   for (const [el,key] of [[language,'language'],[menu,'menu'],[theme,'theme'],[dialog.querySelector('button'),'close']]) el.setAttribute('aria-label',copy[key]);
   language.value = value;
+  document.querySelectorAll('[data-language]').forEach(button => button.setAttribute('aria-checked', button.dataset.language === value));
   document.querySelector('#language-code').textContent = value.toUpperCase();
   localStorage.setItem('samui-language',value);
 }
@@ -63,14 +97,55 @@ theme.querySelectorAll('button').forEach(button => {
   button.onclick = () => applyTheme(button.dataset.mode);
 });
 const languagePill = language.closest('.language-pill');
-document.addEventListener('keydown', event => {
-  if (event.key === 'Tab') languagePill.classList.add('keyboard-navigation');
+const languageOptions = document.querySelector('#language-options');
+const languageButtons = [...languageOptions.querySelectorAll('button')];
+function closeLanguagePicker(restoreFocus = false) {
+  languageOptions.hidden = true;
+  language.setAttribute('aria-expanded', 'false');
+  if (restoreFocus) language.focus();
+}
+function openLanguagePicker() {
+  languageOptions.hidden = false;
+  language.setAttribute('aria-expanded', 'true');
+  languageButtons.find(button => button.dataset.language === language.value).focus();
+}
+language.onclick = () => languageOptions.hidden ? openLanguagePicker() : closeLanguagePicker(true);
+language.addEventListener('keydown', event => {
+  if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
+    event.preventDefault();
+    openLanguagePicker();
+  }
 });
-document.addEventListener('pointerdown', () => languagePill.classList.remove('keyboard-navigation'));
+languageButtons.forEach(button => {
+  // Keep focus inside the picker until click, including browsers that do not focus buttons on tap.
+  button.addEventListener('pointerdown', event => event.preventDefault());
+  button.onclick = () => {
+    const value = button.dataset.language;
+    closeLanguagePicker(true);
+    changeLanguage(value);
+  };
+});
+languageOptions.addEventListener('keydown', event => {
+  const index = languageButtons.indexOf(document.activeElement);
+  let next;
+  if (event.key === 'ArrowDown') next = (index + 1) % languageButtons.length;
+  if (event.key === 'ArrowUp') next = (index - 1 + languageButtons.length) % languageButtons.length;
+  if (event.key === 'Home') next = 0;
+  if (event.key === 'End') next = languageButtons.length - 1;
+  if (next !== undefined) { event.preventDefault(); languageButtons[next].focus(); }
+});
+languagePill.addEventListener('keydown', event => {
+  if (event.key === 'Escape') { event.preventDefault(); closeLanguagePicker(true); }
+});
+languagePill.addEventListener('focusout', event => {
+  if (!languagePill.contains(event.relatedTarget)) closeLanguagePicker();
+});
+document.addEventListener('pointerdown', event => {
+  if (!languagePill.contains(event.target)) closeLanguagePicker();
+});
 let languageChange = 0;
 let fallbackFade;
-language.onchange = async () => {
-  const value = language.value;
+async function changeLanguage(value) {
   const change = ++languageChange;
   fallbackFade?.cancel();
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
