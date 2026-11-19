@@ -83,19 +83,16 @@ function setLang(value) {
   for (const [el,key] of [[language,'language'],[menu,'menu'],[theme,'theme'],[dialog.querySelector('button'),'close']]) el.setAttribute('aria-label',copy[key]);
   language.value = value;
   document.querySelectorAll('[data-language]').forEach(button => button.setAttribute('aria-checked', button.dataset.language === value));
-  document.querySelector('#language-code').textContent = value.toUpperCase();
+  document.querySelector('#language-flag').src = 'img/flags/' + (value === 'en' ? 'gb' : value) + '.svg';
   localStorage.setItem('samui-language',value);
 }
 function applyTheme(value) {
   document.documentElement.dataset.theme = value;
-  theme.querySelectorAll('button').forEach(button => {
-    button.setAttribute('aria-pressed', button.dataset.mode === value);
-  });
+  document.querySelector('#theme-icon').textContent = value === 'dark' ? '🌙' : '☀️';
+  theme.setAttribute('aria-pressed', value === 'dark');
   localStorage.setItem('theme',value);
 }
-theme.querySelectorAll('button').forEach(button => {
-  button.onclick = () => applyTheme(button.dataset.mode);
-});
+theme.onclick = () => applyTheme(document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark');
 const languagePill = language.closest('.language-pill');
 const languageOptions = document.querySelector('#language-options');
 const languageButtons = [...languageOptions.querySelectorAll('button')];
