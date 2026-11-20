@@ -117,10 +117,22 @@ function openLanguagePicker(focusOption = true) {
   language.setAttribute('aria-expanded', 'true');
   if (focusOption) languageButtons.find(button => button.dataset.language === language.value).focus();
 }
-// Keep a tap from blurring the picker before click can toggle its current state.
-language.addEventListener('pointerdown', event => event.preventDefault());
-language.onclick = event => languageOptions.hidden ? openLanguagePicker(event.detail === 0) : closeLanguagePicker(event.detail === 0);
+let languageHiddenAtPointerDown = null;
+language.addEventListener('pointerdown', event => {
+  // Remember the state before mobile focus events can close the menu.
+  languageHiddenAtPointerDown = languageOptions.hidden;
+  event.preventDefault();
+});
+language.addEventListener('pointercancel', () => { languageHiddenAtPointerDown = null; });
+language.onclick = event => {
+  const keyboardActivation = languageHiddenAtPointerDown === null && event.detail === 0;
+  const shouldOpen = languageHiddenAtPointerDown ?? languageOptions.hidden;
+  languageHiddenAtPointerDown = null;
+  if (shouldOpen) openLanguagePicker(keyboardActivation);
+  else closeLanguagePicker(keyboardActivation);
+};
 language.addEventListener('keydown', event => {
+  languageHiddenAtPointerDown = null;
   if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
     event.preventDefault();
     openLanguagePicker();
