@@ -5,6 +5,17 @@ if (document.documentElement.dataset.siteOffline === 'true') {
   return;
 }
 
+const mapFrame = document.querySelector('.map-frame');
+const mapEmbed = mapFrame.querySelector('iframe');
+mapFrame.classList.add('is-loading');
+mapFrame.setAttribute('aria-busy', 'true');
+mapEmbed.addEventListener('load', () => {
+  mapFrame.classList.remove('is-loading');
+  mapFrame.setAttribute('aria-busy', 'false');
+}, { once: true });
+// Attach the load handler before starting the lazy request, including cached loads.
+mapEmbed.src = mapEmbed.dataset.src;
+
 const nav = document.querySelector('nav');
 const menu = document.querySelector('#menu');
 const language = document.querySelector('#language');

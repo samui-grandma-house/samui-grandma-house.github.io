@@ -1,5 +1,6 @@
 const locales = {
   en: {
+    copyright: "© 2026 Samui Grandma House",
     oneBedroom: "1-bedroom houses",
     twoBedroom: "2-bedroom houses",
     studios: "Studios",
@@ -38,6 +39,7 @@ const locales = {
     palms: "Coastal palms"
   },
   th: {
+    copyright: "© 2026 Samui Grandma House",
     oneBedroom: "บ้าน 1 ห้องนอน",
     twoBedroom: "บ้าน 2 ห้องนอน",
     studios: "ห้องสตูดิโอ",
@@ -76,6 +78,7 @@ const locales = {
     palms: "ต้นมะพร้าวริมทะเล"
   },
   ru: {
+    copyright: "© 2026 Samui Grandma House",
     oneBedroom: "Дома с 1 спальней",
     twoBedroom: "Дома с 2 спальнями",
     studios: "Студии",
@@ -114,6 +117,7 @@ const locales = {
     palms: "Пальмы у моря"
   },
   fr: {
+    copyright: "© 2026 Samui Grandma House",
     oneBedroom: "Maisons avec 1 chambre",
     twoBedroom: "Maisons avec 2 chambres",
     studios: "Studios",
@@ -152,6 +156,7 @@ const locales = {
     palms: "Palmiers en bord de mer"
   },
   de: {
+    copyright: "© 2026 Samui Grandma House",
     oneBedroom: "Häuser mit 1 Schlafzimmer",
     twoBedroom: "Häuser mit 2 Schlafzimmern",
     studios: "Studios",
