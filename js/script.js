@@ -112,12 +112,14 @@ function closeLanguagePicker(restoreFocus = false) {
   language.setAttribute('aria-expanded', 'false');
   if (restoreFocus) language.focus();
 }
-function openLanguagePicker() {
+function openLanguagePicker(focusOption = true) {
   languageOptions.hidden = false;
   language.setAttribute('aria-expanded', 'true');
-  languageButtons.find(button => button.dataset.language === language.value).focus();
+  if (focusOption) languageButtons.find(button => button.dataset.language === language.value).focus();
 }
-language.onclick = () => languageOptions.hidden ? openLanguagePicker() : closeLanguagePicker(true);
+// Keep a tap from blurring the picker before click can toggle its current state.
+language.addEventListener('pointerdown', event => event.preventDefault());
+language.onclick = event => languageOptions.hidden ? openLanguagePicker(event.detail === 0) : closeLanguagePicker(event.detail === 0);
 language.addEventListener('keydown', event => {
   if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
     event.preventDefault();
@@ -127,9 +129,9 @@ language.addEventListener('keydown', event => {
 languageButtons.forEach(button => {
   // Keep focus inside the picker until click, including browsers that do not focus buttons on tap.
   button.addEventListener('pointerdown', event => event.preventDefault());
-  button.onclick = () => {
+  button.onclick = event => {
     const value = button.dataset.language;
-    closeLanguagePicker(true);
+    closeLanguagePicker(event.detail === 0);
     changeLanguage(value);
   };
 });
