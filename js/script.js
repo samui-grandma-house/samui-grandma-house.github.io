@@ -61,7 +61,10 @@ for (const [index, [file,key]] of photos.slice(0, 4).entries()) {
   };
   document.querySelector('.photos').append(button);
 }
-dialog.querySelector('button').onclick = () => dialog.close();
+dialog.querySelector('.dismiss').addEventListener('click', event => {
+  event.stopPropagation();
+  dialog.close();
+});
 dialog.querySelector('.gallery-left').onclick = () => stepGallery(-1);
 dialog.querySelector('.gallery-right').onclick = () => stepGallery(1);
 dialog.addEventListener('keydown', event => {
