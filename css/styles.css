@@ -242,11 +242,11 @@ body:has(dialog[open]){overflow:hidden}
 #gallery-viewer .dismiss,#gallery-viewer .gallery-arrow{
   -webkit-appearance:none;appearance:none;box-sizing:border-box;
   display:grid;place-items:center;width:44px;height:44px;min-width:44px;
-  padding:0;border:1px solid #d3d6c5;border-radius:50%;
-  background:#fffaf1;color:#243e34;opacity:1;
+  padding:0;border:0;border-radius:0;box-shadow:none;
+  background:transparent;color:#fffaf1;opacity:1;
   z-index:3;touch-action:manipulation;-webkit-tap-highlight-color:transparent;
 }
-:root[data-theme=dark] #gallery-viewer .gallery-arrow{background:#202e42;color:#f6f1e8;border-color:#405067}
+#gallery-viewer .dismiss svg,#gallery-viewer .gallery-arrow svg{filter:drop-shadow(0 1px 2px #000b)}
 #gallery-viewer .dismiss svg{display:block;width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:2.5;stroke-linecap:round;pointer-events:none}
 #gallery-viewer .gallery-arrow svg{pointer-events:none}
 #gallery-viewer button:focus:not(:focus-visible){outline:none}
