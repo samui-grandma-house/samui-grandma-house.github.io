@@ -254,3 +254,11 @@ body:has(dialog[open]){overflow:hidden}
 #gallery-viewer .gallery-arrow svg{pointer-events:none}
 #gallery-viewer button:focus:not(:focus-visible){outline:none}
 #gallery-viewer button:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+
+/* Clip the loading shimmer inside the badge, preserving its yellow border. */
+.badge::before{opacity:1;transition:opacity .35s ease}
+.badge.is-loading::before,.badge.load-failed::before{opacity:0}
+.badge::after{content:"";position:absolute;inset:0;border-radius:50%;pointer-events:none;background:linear-gradient(105deg,#eee8d7 20%,#fffdf5 45%,#eee8d7 70%);background-size:250% 100%;opacity:0;visibility:hidden;transition:opacity .35s ease,visibility 0s linear .35s}
+.badge.is-loading::after{opacity:1;visibility:visible;transition:none;animation:logo-shimmer 1.6s ease-in-out infinite}
+@keyframes logo-shimmer{from{background-position:150% 0}to{background-position:-100% 0}}
+@media(prefers-reduced-motion:reduce){.badge.is-loading::after{animation:none}}

@@ -5,6 +5,18 @@ if (document.documentElement.dataset.siteOffline === 'true') {
   return;
 }
 
+const logoBadge = document.querySelector('.badge');
+const logoImage = new Image();
+logoImage.onload = async () => {
+  try { await logoImage.decode(); } catch { /* Loaded images can still render without decode(). */ }
+  logoBadge.classList.remove('is-loading');
+};
+logoImage.onerror = () => {
+  logoBadge.classList.remove('is-loading');
+  logoBadge.classList.add('load-failed');
+};
+logoImage.src = 'img/grandma-mark.jpg';
+
 const mapFrame = document.querySelector('.map-frame');
 const mapEmbed = mapFrame.querySelector('iframe');
 mapFrame.classList.add('is-loading');
