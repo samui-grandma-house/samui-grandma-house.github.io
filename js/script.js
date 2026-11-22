@@ -137,6 +137,7 @@ function setLang(value) {
   dialog.querySelector('.gallery-left').setAttribute('aria-label', copy[rtl ? 'nextPhoto' : 'previousPhoto']);
   dialog.querySelector('.gallery-right').setAttribute('aria-label', copy[rtl ? 'previousPhoto' : 'nextPhoto']);
   if (dialog.open) showGalleryPhoto(galleryIndex);
+  collectionDialog.querySelector('.collection-close').setAttribute('aria-label', copy.close);
   language.value = value;
   document.querySelectorAll('[data-language]').forEach(button => button.setAttribute('aria-checked', button.dataset.language === value));
   document.querySelector('#language-flag').src = 'img/flags/' + ({ en: 'gb', he: 'il' }[value] || value) + '.svg';
