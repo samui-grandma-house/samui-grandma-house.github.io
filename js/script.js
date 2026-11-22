@@ -35,7 +35,20 @@ menu.onclick = () => toggleMenu(!nav.classList.contains('open'));
 nav.onclick = () => toggleMenu(false);
 document.addEventListener('keydown', event => { if (event.key === 'Escape') toggleMenu(false); });
 const photos = [['sea-terrace','terrace'],['garden-house','garden'],['house-bedroom','bedroom'],['palm-garden','palms'],['house-living','living'],['garden-bedroom','bedroom'],['studio-bedroom','bedroom'],['studio-living','studio']];
-for (const [file,key] of photos) {
+let galleryIndex = 0;
+const expandedPhoto = dialog.querySelector('img');
+function showGalleryPhoto(index) {
+  galleryIndex = (index + photos.length) % photos.length;
+  const [file, key] = photos[galleryIndex];
+  const caption = locales[document.documentElement.lang][key];
+  expandedPhoto.src = 'img/' + file + '.jpg';
+  expandedPhoto.alt = caption;
+  dialog.querySelector('p').textContent = caption + ' · ' + (galleryIndex + 1) + ' / ' + photos.length;
+}
+function stepGallery(direction) {
+  showGalleryPhoto(galleryIndex + (document.documentElement.dir === 'rtl' ? -direction : direction));
+}
+for (const [index, [file,key]] of photos.entries()) {
   const button = document.createElement('button');
   const photo = new Image();
   photo.src = 'img/' + file + '.jpg';
@@ -43,19 +56,43 @@ for (const [file,key] of photos) {
   photo.dataset.alt = key;
   button.append(photo);
   button.onclick = () => {
-    const expanded = dialog.querySelector('img');
-    expanded.src = photo.src;
-    expanded.alt = photo.alt;
-    dialog.querySelector('p').textContent = photo.alt;
+    showGalleryPhoto(index);
     dialog.showModal();
   };
   document.querySelector('.photos').append(button);
 }
 dialog.querySelector('button').onclick = () => dialog.close();
-dialog.onclick = event => { if (event.target === dialog) dialog.close(); };
+dialog.querySelector('.gallery-left').onclick = () => stepGallery(-1);
+dialog.querySelector('.gallery-right').onclick = () => stepGallery(1);
+dialog.addEventListener('keydown', event => {
+  if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
+    event.preventDefault();
+    stepGallery(event.key === 'ArrowLeft' ? -1 : 1);
+  }
+});
+let swipeStart = null;
+expandedPhoto.addEventListener('pointerdown', event => {
+  if (!event.isPrimary || event.button !== 0) return;
+  swipeStart = { x: event.clientX, y: event.clientY, id: event.pointerId };
+  expandedPhoto.setPointerCapture(event.pointerId);
+});
+expandedPhoto.addEventListener('pointerup', event => {
+  if (!swipeStart || swipeStart.id !== event.pointerId) return;
+  const dx = event.clientX - swipeStart.x;
+  const dy = event.clientY - swipeStart.y;
+  swipeStart = null;
+  if (Math.abs(dx) >= 45 && Math.abs(dx) > Math.abs(dy) * 1.5) stepGallery(dx < 0 ? 1 : -1);
+});
+expandedPhoto.addEventListener('pointercancel', () => { swipeStart = null; });
+dialog.addEventListener('close', () => { swipeStart = null; });
+dialog.onclick = event => {
+  const bounds = dialog.getBoundingClientRect();
+  if (event.target === dialog && (event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom)) dialog.close();
+};
 // Replace these placeholder paths individually when the final five photos are ready.
 const stayCollections = {
   oneBedroom: ['garden-house', 'garden-house', 'garden-house', 'garden-house', 'garden-house'],
+  twinHouse: ['garden-house', 'garden-house', 'garden-house', 'garden-house', 'garden-house'],
   twoBedroom: ['house-living', 'house-living', 'house-living', 'house-living', 'house-living'],
   studios: ['studio-living', 'studio-living', 'studio-living', 'studio-living', 'studio-living']
 };
@@ -89,12 +126,17 @@ collectionDialog.addEventListener('click', event => {
 function setLang(value) {
   const copy = locales[value] || locales.en;
   document.documentElement.lang = value;
+  document.documentElement.dir = value === 'he' ? 'rtl' : 'ltr';
   document.querySelectorAll('[data-i18n]').forEach(el => { el.textContent = copy[el.dataset.i18n]; });
   document.querySelectorAll('[data-alt]').forEach(el => { el.alt = copy[el.dataset.alt]; });
   for (const [el,key] of [[language,'language'],[menu,'menu'],[theme,'theme'],[dialog.querySelector('button'),'close']]) el.setAttribute('aria-label',copy[key]);
+  const rtl = value === 'he';
+  dialog.querySelector('.gallery-left').setAttribute('aria-label', copy[rtl ? 'nextPhoto' : 'previousPhoto']);
+  dialog.querySelector('.gallery-right').setAttribute('aria-label', copy[rtl ? 'previousPhoto' : 'nextPhoto']);
+  if (dialog.open) showGalleryPhoto(galleryIndex);
   language.value = value;
   document.querySelectorAll('[data-language]').forEach(button => button.setAttribute('aria-checked', button.dataset.language === value));
-  document.querySelector('#language-flag').src = 'img/flags/' + (value === 'en' ? 'gb' : value) + '.svg';
+  document.querySelector('#language-flag').src = 'img/flags/' + ({ en: 'gb', he: 'il' }[value] || value) + '.svg';
   localStorage.setItem('samui-language',value);
 }
 function applyTheme(value) {
