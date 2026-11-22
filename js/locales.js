@@ -1,5 +1,9 @@
 const locales = {
   en: {
+    beachPhoto: "Beach and sea",
+    sunsetPhoto: "Sunset by Big Buddha",
+    welcomePhoto: "Garden welcome sign",
+    pathPhoto: "Tropical garden pathway",
     previousPhoto: "Previous photo",
     nextPhoto: "Next photo",
     nearbyTransport: "Airport and pier",
@@ -51,6 +55,10 @@ const locales = {
     palms: "Coastal palms"
   },
   th: {
+    beachPhoto: "ชายหาดและทะเล",
+    sunsetPhoto: "พระอาทิตย์ตกใกล้วัดพระใหญ่",
+    welcomePhoto: "ป้ายต้อนรับในสวน",
+    pathPhoto: "ทางเดินในสวนเขตร้อน",
     previousPhoto: "รูปก่อนหน้า",
     nextPhoto: "รูปถัดไป",
     nearbyTransport: "สนามบินและท่าเรือ",
@@ -102,6 +110,10 @@ const locales = {
     palms: "ต้นมะพร้าวริมทะเล"
   },
   ru: {
+    beachPhoto: "Пляж и море",
+    sunsetPhoto: "Закат у Большого Будды",
+    welcomePhoto: "Приветственная вывеска в саду",
+    pathPhoto: "Дорожка в тропическом саду",
     previousPhoto: "Предыдущее фото",
     nextPhoto: "Следующее фото",
     nearbyTransport: "Аэропорт и пирс",
@@ -153,6 +165,10 @@ const locales = {
     palms: "Пальмы у моря"
   },
   fr: {
+    beachPhoto: "Plage et mer",
+    sunsetPhoto: "Coucher de soleil près du Grand Bouddha",
+    welcomePhoto: "Panneau de bienvenue dans le jardin",
+    pathPhoto: "Allée du jardin tropical",
     previousPhoto: "Photo précédente",
     nextPhoto: "Photo suivante",
     nearbyTransport: "Aéroport et embarcadère",
@@ -204,6 +220,10 @@ const locales = {
     palms: "Palmiers en bord de mer"
   },
   de: {
+    beachPhoto: "Strand und Meer",
+    sunsetPhoto: "Sonnenuntergang beim Großen Buddha",
+    welcomePhoto: "Willkommensschild im Garten",
+    pathPhoto: "Weg durch den tropischen Garten",
     previousPhoto: "Vorheriges Foto",
     nextPhoto: "Nächstes Foto",
     nearbyTransport: "Flughafen und Pier",
@@ -255,6 +275,10 @@ const locales = {
     palms: "Palmen am Meer"
   },
   he: {
+    beachPhoto: "חוף הים",
+    sunsetPhoto: "שקיעה ליד הבודהה הגדול",
+    welcomePhoto: "שלט קבלת פנים בגינה",
+    pathPhoto: "שביל בגינה טרופית",
     previousPhoto: "התמונה הקודמת",
     nextPhoto: "התמונה הבאה",
     nearbyTransport: "שדה תעופה ומזח",

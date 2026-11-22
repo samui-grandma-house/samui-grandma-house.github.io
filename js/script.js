@@ -34,7 +34,7 @@ function toggleMenu(open) {
 menu.onclick = () => toggleMenu(!nav.classList.contains('open'));
 nav.onclick = () => toggleMenu(false);
 document.addEventListener('keydown', event => { if (event.key === 'Escape') toggleMenu(false); });
-const photos = [['sea-terrace','terrace'],['garden-house','garden'],['house-bedroom','bedroom'],['palm-garden','palms'],['house-living','living'],['garden-bedroom','bedroom'],['studio-bedroom','bedroom'],['studio-living','studio']];
+const photos = [['palm-garden','palms'],['garden-bedroom','bedroom'],['garden-2446','beachPhoto'],['garden-0972','sunsetPhoto'],['flower-covered-house','garden'],['garden-welcome','welcomePhoto'],['tropical-garden-path','pathPhoto'],['house-in-garden','garden']];
 let galleryIndex = 0;
 const expandedPhoto = dialog.querySelector('img');
 function showGalleryPhoto(index) {
@@ -48,7 +48,7 @@ function showGalleryPhoto(index) {
 function stepGallery(direction) {
   showGalleryPhoto(galleryIndex + (document.documentElement.dir === 'rtl' ? -direction : direction));
 }
-for (const [index, [file,key]] of photos.entries()) {
+for (const [index, [file,key]] of photos.slice(0, 4).entries()) {
   const button = document.createElement('button');
   const photo = new Image();
   photo.src = 'img/' + file + '.jpg';
