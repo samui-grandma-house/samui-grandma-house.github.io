@@ -20,17 +20,17 @@
   lettering.classList.add('logo-lettering');
   lettering.setAttribute('viewBox', '0 0 379 82');
   lettering.setAttribute('aria-hidden', 'true');
-  for (const [text, y, size, weight, width] of [
-    ['SAMUI GRANDMA HOUSE', 25, 20, 800, 326],
-    ['THAILAND', 48, 16, 700, 172],
-    ['MAIL: NUIE123@YAHOO.COM.AU', 68, 12.5, 700, 319]
+  for (const [text, y, size, weight, spacing] of [
+    ['SAMUI GRANDMA HOUSE', 25, 20, 800, 0],
+    ['THAILAND', 48, 16, 700, 5],
+    ['MAIL: NUIE123@YAHOO.COM.AU', 68, 12.5, 700, 1]
   ]) {
     const line = document.createElementNS(svgNamespace, 'text');
     line.textContent = text;
     for (const [key, value] of Object.entries({
       x: 189.5, y, 'text-anchor': 'middle', 'font-size': size,
       'font-weight': weight, 'font-family': 'Arial, Helvetica, sans-serif',
-      textLength: width, lengthAdjust: 'spacingAndGlyphs', fill: '#000'
+      'letter-spacing': spacing, fill: '#000'
     })) line.setAttribute(key, value);
     lettering.append(line);
   }
@@ -61,6 +61,14 @@
     sky.addColorStop(1, `rgb(${Math.round(255 - 107 * night)} ${Math.round(255 - 62 * night)} 255)`);
     ctx.fillStyle = sky;
     ctx.fillRect(0, 0, 379, 169);
+    // Ease the sky into the white text panel before drawing the sharp logo.
+    const skyToPaper = ctx.createLinearGradient(0, 112, 0, 169);
+    for (let step = 0; step <= 12; step++) {
+      const position = step / 12;
+      skyToPaper.addColorStop(position, `rgba(255, 255, 255, ${ease(position)})`);
+    }
+    ctx.fillStyle = skyToPaper;
+    ctx.fillRect(0, 112, 379, 57);
     // Preserve the original logo; the lower text is rendered separately as vectors.
     ctx.globalCompositeOperation = 'multiply';
     ctx.drawImage(base, 0, 0, 379, 169, 0, 0, 379, 169);
