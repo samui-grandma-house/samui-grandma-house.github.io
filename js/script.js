@@ -15,24 +15,8 @@ logoStatus.className = 'logo-status';
 logoStatus.setAttribute('role', 'status');
 logoStatus.hidden = true;
 logoDialog.append(logoStatus);
-let logoPress = null;
-let logoLongPress = false;
+const logoEmailLink = logoDialog.querySelector('.logo-email');
 logoAnimation.draggable = false;
-logoAnimation.addEventListener('contextmenu', event => event.preventDefault());
-logoAnimation.addEventListener('pointerdown', event => {
-  logoLongPress = false;
-  if (!event.isPrimary || event.button !== 0) { logoPress = null; return; }
-  logoPress = { id: event.pointerId, x: event.clientX, y: event.clientY, start: performance.now() };
-  logoAnimation.setPointerCapture(event.pointerId);
-});
-logoAnimation.addEventListener('pointermove', event => {
-  if (logoPress && Math.hypot(event.clientX - logoPress.x, event.clientY - logoPress.y) > 12) logoPress = null;
-});
-logoAnimation.addEventListener('pointerup', event => {
-  logoLongPress = logoPress?.id === event.pointerId && performance.now() - logoPress.start >= 600;
-  logoPress = null;
-});
-logoAnimation.addEventListener('pointercancel', () => { logoPress = null; logoLongPress = false; });
 function copyContactEmailFallback() {
   const field = document.createElement('textarea');
   field.value = contactEmail;
@@ -46,25 +30,24 @@ function copyContactEmailFallback() {
   field.remove();
   return copied;
 }
-logoDialog.addEventListener('click', event => {
-  if (event.target !== logoAnimation || !logoLongPress) {
-    logoDialog.close();
-    return;
-  }
-  logoLongPress = false;
-  // Use the release click so clipboard and mail actions retain user activation.
-  const copied = navigator.clipboard?.writeText
-    ? navigator.clipboard.writeText(contactEmail).then(() => true, copyContactEmailFallback)
-    : Promise.resolve(copyContactEmailFallback());
+logoEmailLink.addEventListener('click', () => {
+  // Copy during the user gesture, before the native mail link opens another app.
+  const copiedImmediately = copyContactEmailFallback();
+  const copied = copiedImmediately
+    ? Promise.resolve(true)
+    : navigator.clipboard?.writeText
+      ? navigator.clipboard.writeText(contactEmail).then(() => true, () => false)
+      : Promise.resolve(false);
   copied.then(success => {
     logoStatus.textContent = success ? 'Email copied: ' + contactEmail : 'Copy email: ' + contactEmail;
     logoStatus.hidden = false;
   });
-  window.location.href = 'mailto:' + contactEmail;
+});
+logoDialog.addEventListener('click', event => {
+  if (event.target.closest('.logo-email')) return;
+  logoDialog.close();
 });
 logoDialog.addEventListener('close', () => {
-  logoPress = null;
-  logoLongPress = false;
   logoStatus.hidden = true;
   logoBadge.focus({ preventScroll: true });
 });
