@@ -264,8 +264,9 @@ body:has(dialog[open]){overflow:hidden}
 @media(prefers-reduced-motion:reduce){.badge.is-loading::after{animation:none}}
 
 /* Logo animation links to email; the surrounding overlay dismisses it. */
-button.badge{padding:0;flex-shrink:0;appearance:none;-webkit-appearance:none}
-button.badge:focus-visible{outline:3px solid var(--ink);outline-offset:4px}
+button.brand{padding:0;border:0;background:transparent;text-align:start;appearance:none;-webkit-appearance:none}
+button.brand .badge{flex-shrink:0}
+button.brand:focus-visible{outline:3px solid var(--ink);outline-offset:4px;border-radius:6px}
 #logo-viewer{padding:0;border:0;border-radius:20px;background:transparent;overflow:visible;max-width:90vw;cursor:pointer;box-shadow:0 20px 80px #0005}
 #logo-viewer::backdrop{background:rgb(9 17 28 / 50%);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);cursor:pointer}
 #logo-viewer .logo-email img{display:block;width:min(760px,90vw);height:auto;max-width:90vw;max-height:80svh;object-fit:contain;border-radius:20px}

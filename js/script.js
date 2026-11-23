@@ -7,7 +7,8 @@ if (document.documentElement.dataset.siteOffline === 'true') {
 
 const logoBadge = document.querySelector('.badge');
 const logoDialog = document.querySelector('#logo-viewer');
-logoBadge.addEventListener('click', () => logoDialog.showModal());
+const logoTrigger = document.querySelector('.brand');
+logoTrigger.addEventListener('click', () => logoDialog.showModal());
 const logoAnimation = logoDialog.querySelector('img');
 const contactEmail = 'nuie123@yahoo.com.au';
 const logoStatus = document.createElement('p');
@@ -49,7 +50,7 @@ logoDialog.addEventListener('click', event => {
 });
 logoDialog.addEventListener('close', () => {
   logoStatus.hidden = true;
-  logoBadge.focus({ preventScroll: true });
+  logoTrigger.focus({ preventScroll: true });
 });
 const logoImage = new Image();
 logoImage.onload = async () => {
