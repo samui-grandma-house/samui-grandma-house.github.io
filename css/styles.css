@@ -272,4 +272,7 @@ button.badge:focus-visible{outline:3px solid var(--ink);outline-offset:4px}
 .logo-close{position:fixed;top:max(16px,env(safe-area-inset-top));right:max(16px,env(safe-area-inset-right));display:grid;place-items:center;width:44px;height:44px;padding:0;border-radius:50%;background:rgb(18 28 43 / 75%);color:white;touch-action:manipulation}
 .logo-close svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:2.5;stroke-linecap:round;pointer-events:none}
 .logo-close:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+#logo-viewer>img{-webkit-touch-callout:none;user-select:none;-webkit-user-select:none;touch-action:pinch-zoom}
+#logo-viewer .logo-status{position:absolute;top:100%;left:0;right:0;margin:12px 0 0;padding:10px 14px;border-radius:12px;background:var(--paper);color:var(--ink);text-align:center;font-size:14px;overflow-wrap:anywhere}
+.clipboard-field{position:fixed;top:0;left:0;width:1px;height:1px;opacity:0;font-size:16px}
 @media(prefers-reduced-motion:no-preference){#logo-viewer[open]{animation:collection-appear 200ms ease-out}}

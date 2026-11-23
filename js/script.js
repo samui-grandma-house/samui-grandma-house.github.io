@@ -8,9 +8,66 @@ if (document.documentElement.dataset.siteOffline === 'true') {
 const logoBadge = document.querySelector('.badge');
 const logoDialog = document.querySelector('#logo-viewer');
 logoBadge.addEventListener('click', () => logoDialog.showModal());
-// Clicks on the image, close button, and backdrop all dismiss the overlay.
-logoDialog.addEventListener('click', () => logoDialog.close());
-logoDialog.addEventListener('close', () => logoBadge.focus({ preventScroll: true }));
+const logoAnimation = logoDialog.querySelector('img');
+const contactEmail = 'nuie123@yahoo.com.au';
+const logoStatus = document.createElement('p');
+logoStatus.className = 'logo-status';
+logoStatus.setAttribute('role', 'status');
+logoStatus.hidden = true;
+logoDialog.append(logoStatus);
+let logoPress = null;
+let logoLongPress = false;
+logoAnimation.draggable = false;
+logoAnimation.addEventListener('contextmenu', event => event.preventDefault());
+logoAnimation.addEventListener('pointerdown', event => {
+  logoLongPress = false;
+  if (!event.isPrimary || event.button !== 0) { logoPress = null; return; }
+  logoPress = { id: event.pointerId, x: event.clientX, y: event.clientY, start: performance.now() };
+  logoAnimation.setPointerCapture(event.pointerId);
+});
+logoAnimation.addEventListener('pointermove', event => {
+  if (logoPress && Math.hypot(event.clientX - logoPress.x, event.clientY - logoPress.y) > 12) logoPress = null;
+});
+logoAnimation.addEventListener('pointerup', event => {
+  logoLongPress = logoPress?.id === event.pointerId && performance.now() - logoPress.start >= 600;
+  logoPress = null;
+});
+logoAnimation.addEventListener('pointercancel', () => { logoPress = null; logoLongPress = false; });
+function copyContactEmailFallback() {
+  const field = document.createElement('textarea');
+  field.value = contactEmail;
+  field.className = 'clipboard-field';
+  field.readOnly = true;
+  logoDialog.append(field);
+  field.select();
+  field.setSelectionRange(0, contactEmail.length);
+  let copied = false;
+  try { copied = document.execCommand('copy'); } catch { /* Show the address if copying is blocked. */ }
+  field.remove();
+  return copied;
+}
+logoDialog.addEventListener('click', event => {
+  if (event.target !== logoAnimation || !logoLongPress) {
+    logoDialog.close();
+    return;
+  }
+  logoLongPress = false;
+  // Use the release click so clipboard and mail actions retain user activation.
+  const copied = navigator.clipboard?.writeText
+    ? navigator.clipboard.writeText(contactEmail).then(() => true, copyContactEmailFallback)
+    : Promise.resolve(copyContactEmailFallback());
+  copied.then(success => {
+    logoStatus.textContent = success ? 'Email copied: ' + contactEmail : 'Copy email: ' + contactEmail;
+    logoStatus.hidden = false;
+  });
+  window.location.href = 'mailto:' + contactEmail;
+});
+logoDialog.addEventListener('close', () => {
+  logoPress = null;
+  logoLongPress = false;
+  logoStatus.hidden = true;
+  logoBadge.focus({ preventScroll: true });
+});
 const logoImage = new Image();
 logoImage.onload = async () => {
   try { await logoImage.decode(); } catch { /* Loaded images can still render without decode(). */ }
