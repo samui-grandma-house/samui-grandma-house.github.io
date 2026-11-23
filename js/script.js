@@ -6,6 +6,11 @@ if (document.documentElement.dataset.siteOffline === 'true') {
 }
 
 const logoBadge = document.querySelector('.badge');
+const logoDialog = document.querySelector('#logo-viewer');
+logoBadge.addEventListener('click', () => logoDialog.showModal());
+// Clicks on the image, close button, and backdrop all dismiss the overlay.
+logoDialog.addEventListener('click', () => logoDialog.close());
+logoDialog.addEventListener('close', () => logoBadge.focus({ preventScroll: true }));
 const logoImage = new Image();
 logoImage.onload = async () => {
   try { await logoImage.decode(); } catch { /* Loaded images can still render without decode(). */ }
@@ -32,7 +37,7 @@ const nav = document.querySelector('nav');
 const menu = document.querySelector('#menu');
 const language = document.querySelector('#language');
 const theme = document.querySelector('#theme');
-const dialog = document.querySelector('dialog');
+const dialog = document.querySelector('#gallery-viewer');
 for (const id of ['home','info','gallery','houses','studio','reviews','map','contacts']) {
   const link = document.createElement('a');
   link.href = '#' + id;
@@ -150,6 +155,7 @@ function setLang(value) {
   dialog.querySelector('.gallery-right').setAttribute('aria-label', copy[rtl ? 'previousPhoto' : 'nextPhoto']);
   if (dialog.open) showGalleryPhoto(galleryIndex);
   collectionDialog.querySelector('.collection-close').setAttribute('aria-label', copy.close);
+  logoDialog.querySelector('.logo-close').setAttribute('aria-label', copy.close);
   language.value = value;
   document.querySelectorAll('[data-language]').forEach(button => button.setAttribute('aria-checked', button.dataset.language === value));
   document.querySelector('#language-flag').src = 'img/flags/' + ({ en: 'gb', he: 'il' }[value] || value) + '.svg';

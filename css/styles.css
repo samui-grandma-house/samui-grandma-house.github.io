@@ -262,3 +262,14 @@ body:has(dialog[open]){overflow:hidden}
 .badge.is-loading::after{opacity:1;visibility:visible;transition:none;animation:logo-shimmer 1.6s ease-in-out infinite}
 @keyframes logo-shimmer{from{background-position:150% 0}to{background-position:-100% 0}}
 @media(prefers-reduced-motion:reduce){.badge.is-loading::after{animation:none}}
+
+/* Logo animation overlay; every part of the modal is a dismissal target. */
+button.badge{padding:0;flex-shrink:0;appearance:none;-webkit-appearance:none}
+button.badge:focus-visible{outline:3px solid var(--ink);outline-offset:4px}
+#logo-viewer{padding:0;border:0;border-radius:20px;background:transparent;overflow:visible;max-width:90vw;cursor:pointer;box-shadow:0 20px 80px #0005}
+#logo-viewer::backdrop{background:rgb(9 17 28 / 50%);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);cursor:pointer}
+#logo-viewer>img{display:block;width:min(760px,90vw);height:auto;max-width:90vw;max-height:80svh;object-fit:contain;border-radius:20px}
+.logo-close{position:fixed;top:max(16px,env(safe-area-inset-top));right:max(16px,env(safe-area-inset-right));display:grid;place-items:center;width:44px;height:44px;padding:0;border-radius:50%;background:rgb(18 28 43 / 75%);color:white;touch-action:manipulation}
+.logo-close svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:2.5;stroke-linecap:round;pointer-events:none}
+.logo-close:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+@media(prefers-reduced-motion:no-preference){#logo-viewer[open]{animation:collection-appear 200ms ease-out}}
