@@ -103,7 +103,10 @@ const expandedPhoto = dialog.querySelector('img');
 const galleryTitle = document.createElement('h2');
 galleryTitle.id = 'viewer-title';
 galleryTitle.hidden = true;
-dialog.prepend(galleryTitle);
+const galleryHeader = document.createElement('div');
+galleryHeader.className = 'gallery-header';
+galleryHeader.append(galleryTitle, dialog.querySelector('.dismiss'));
+dialog.prepend(galleryHeader);
 const galleryThumbnails = document.createElement('div');
 galleryThumbnails.className = 'gallery-thumbnails';
 galleryThumbnails.hidden = true;
@@ -138,7 +141,14 @@ function openGallery(items, index, collection = null) {
     });
   }
   showGalleryPhoto(index);
+  // Focus static content on opening; Tab still reveals the controls' focus rings.
+  const caption = dialog.querySelector('p');
+  for (const element of [galleryTitle, caption]) element.removeAttribute('autofocus');
+  const initialFocus = collection ? galleryTitle : caption;
+  initialFocus.tabIndex = -1;
+  initialFocus.setAttribute('autofocus', '');
   dialog.showModal();
+  initialFocus.focus({ preventScroll: true });
 }
 
 const galleryStatus = document.createElement('div');

@@ -311,3 +311,11 @@ button.brand:focus-visible{outline:3px solid var(--ink);outline-offset:4px;borde
 .review-summary{display:inline-flex;align-items:center;gap:8px;margin:0 0 28px;color:var(--ink);font-size:clamp(16px,2vw,20px);text-decoration:none}
 .review-summary:hover{text-decoration:underline}
 .review-summary:focus-visible{outline:3px solid var(--accent);outline-offset:5px}
+
+/* Align the title and close control in one row, including wrapped mobile titles. */
+.gallery-header{display:contents}
+#gallery-viewer.house-gallery .gallery-header{display:flex;align-items:center;gap:12px;margin:0 0 12px;padding-inline-start:4px}
+#gallery-viewer.house-gallery #viewer-title{flex:1;min-width:0;margin:0}
+#gallery-viewer.house-gallery .dismiss{position:static;flex:0 0 44px;color:var(--ink)}
+#gallery-viewer .dismiss{border-radius:50%}
+#viewer-title:focus,#gallery-caption:focus{outline:none}
