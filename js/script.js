@@ -92,19 +92,132 @@ function toggleMenu(open) {
 menu.onclick = () => toggleMenu(!nav.classList.contains('open'));
 nav.onclick = () => toggleMenu(false);
 document.addEventListener('keydown', event => { if (event.key === 'Escape') toggleMenu(false); });
-const photos = [['palm-garden','palms'],['garden-bedroom','bedroom'],['garden-2446','beachPhoto'],['garden-0972','sunsetPhoto'],['flower-covered-house','garden'],['garden-welcome','welcomePhoto'],['tropical-garden-path','pathPhoto'],['house-in-garden','garden']];
-let galleryIndex = 0;
+const photos = [['palm-garden','palms'],['garden-2446','beachPhoto'],['garden-0972','sunsetPhoto'],['flower-covered-house','garden'],['garden-welcome','welcomePhoto'],['tropical-garden-path','pathPhoto'],['house-in-garden','garden'],["bougainvillea-garden", "bougainvilleaPhoto"],["rocky-shore-sunset", "rockySunsetPhoto"],["rippling-sea-sunset", "ripplingSunsetPhoto"],["serene-ocean-sunset", "sereneSunsetPhoto"],["plumeria-sunset", "plumeriaPhoto"],["children-sunset-sea", "childrenSunsetPhoto"],["coconuts-blue-lagoon", "coconutsPhoto"],["sailboat-island", "sailboatPhoto"]];
+let activePhotos = photos;
+let activeCollection = null;
+let requestedGalleryIndex = 0;
+let galleryRequest = 0;
+let galleryLoadingTimer;
+const galleryCache = new Map();
 const expandedPhoto = dialog.querySelector('img');
-function showGalleryPhoto(index) {
-  galleryIndex = (index + photos.length) % photos.length;
-  const [file, key] = photos[galleryIndex];
-  const caption = locales[document.documentElement.lang][key];
-  expandedPhoto.src = 'img/' + file + '.jpg';
-  expandedPhoto.alt = caption;
-  dialog.querySelector('p').textContent = caption + ' · ' + (galleryIndex + 1) + ' / ' + photos.length;
+const galleryTitle = document.createElement('h2');
+galleryTitle.id = 'viewer-title';
+galleryTitle.hidden = true;
+dialog.prepend(galleryTitle);
+const galleryThumbnails = document.createElement('div');
+galleryThumbnails.className = 'gallery-thumbnails';
+galleryThumbnails.hidden = true;
+dialog.append(galleryThumbnails);
+function openGallery(items, index, collection = null) {
+  ++galleryRequest;
+  clearGalleryLoading();
+  activePhotos = items;
+  activeCollection = collection;
+  expandedPhoto.removeAttribute('src');
+  expandedPhoto.alt = '';
+  dialog.querySelector('p').textContent = '';
+  dialog.classList.toggle('house-gallery', Boolean(collection));
+  galleryTitle.hidden = !collection;
+  galleryTitle.textContent = collection ? locales[document.documentElement.lang][collection] : '';
+  dialog.setAttribute('aria-labelledby', collection ? 'viewer-title' : 'gallery-caption');
+  galleryThumbnails.hidden = !collection;
+  galleryThumbnails.replaceChildren();
+  if (collection) {
+    items.forEach(([file, key], photoIndex) => {
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.setAttribute('aria-label', locales[document.documentElement.lang][key] + ' · ' + (photoIndex + 1) + ' / ' + items.length);
+      button.setAttribute('aria-pressed', 'false');
+      const thumbnail = new Image();
+      thumbnail.src = 'img/' + file + '.jpg';
+      thumbnail.alt = '';
+      thumbnail.loading = 'lazy';
+      button.append(thumbnail);
+      button.onclick = () => showGalleryPhoto(photoIndex);
+      galleryThumbnails.append(button);
+    });
+  }
+  showGalleryPhoto(index);
+  dialog.showModal();
 }
+
+const galleryStatus = document.createElement('div');
+galleryStatus.className = 'gallery-status';
+galleryStatus.hidden = true;
+const galleryMessage = document.createElement('span');
+galleryMessage.setAttribute('role', 'status');
+const galleryRetry = document.createElement('button');
+galleryRetry.type = 'button';
+galleryRetry.hidden = true;
+galleryStatus.append(galleryMessage, galleryRetry);
+dialog.append(galleryStatus);
+const wrapGalleryIndex = index => (index + activePhotos.length) % activePhotos.length;
+function loadGalleryPhoto(index) {
+  const file = activePhotos[index][0];
+  if (!galleryCache.has(file)) {
+    const pending = new Promise((resolve, reject) => {
+      const photo = new Image();
+      const timeout = setTimeout(() => finish(new Error('Image load timed out')), 20000);
+      function finish(error) {
+        clearTimeout(timeout);
+        photo.onload = photo.onerror = null;
+        if (error) reject(error);
+        else resolve(photo);
+      }
+      photo.onload = () => photo.decode().then(() => finish(), finish);
+      photo.onerror = () => finish(new Error('Image unavailable'));
+      photo.src = 'img/' + file + '.jpg';
+    }).catch(error => {
+      galleryCache.delete(file);
+      throw error;
+    });
+    galleryCache.set(file, pending);
+  }
+  return galleryCache.get(file);
+}
+function clearGalleryLoading() {
+  clearTimeout(galleryLoadingTimer);
+  dialog.classList.remove('is-loading');
+  dialog.setAttribute('aria-busy', 'false');
+  galleryStatus.hidden = true;
+  galleryRetry.hidden = true;
+}
+async function showGalleryPhoto(index) {
+  requestedGalleryIndex = wrapGalleryIndex(index);
+  const target = requestedGalleryIndex;
+  const request = ++galleryRequest;
+  clearGalleryLoading();
+  dialog.setAttribute('aria-busy', 'true');
+  galleryLoadingTimer = setTimeout(() => {
+    dialog.classList.add('is-loading');
+    galleryMessage.textContent = locales[document.documentElement.lang].photoLoading;
+    galleryStatus.hidden = false;
+  }, 200);
+  try {
+    const photo = await loadGalleryPhoto(target);
+    if (request !== galleryRequest) return;
+    const caption = locales[document.documentElement.lang][activePhotos[target][1]];
+    expandedPhoto.src = photo.src;
+    expandedPhoto.alt = caption;
+    dialog.querySelector('p').textContent = caption + ' · ' + (target + 1) + ' / ' + activePhotos.length;
+    [...galleryThumbnails.children].forEach((button, index) => button.setAttribute('aria-pressed', String(index === target)));
+    clearGalleryLoading();
+    for (const neighbor of [target - 1, target + 1]) {
+      loadGalleryPhoto(wrapGalleryIndex(neighbor)).catch(() => {});
+    }
+  } catch {
+    if (request !== galleryRequest) return;
+    clearGalleryLoading();
+    const copy = locales[document.documentElement.lang];
+    galleryMessage.textContent = copy.photoLoadError;
+    galleryRetry.textContent = copy.retryPhoto;
+    galleryRetry.hidden = false;
+    galleryStatus.hidden = false;
+  }
+}
+galleryRetry.onclick = () => showGalleryPhoto(requestedGalleryIndex);
 function stepGallery(direction) {
-  showGalleryPhoto(galleryIndex + (document.documentElement.dir === 'rtl' ? -direction : direction));
+  showGalleryPhoto(requestedGalleryIndex + (document.documentElement.dir === 'rtl' ? -direction : direction));
 }
 for (const [index, [file,key]] of photos.slice(0, 4).entries()) {
   const button = document.createElement('button');
@@ -114,8 +227,7 @@ for (const [index, [file,key]] of photos.slice(0, 4).entries()) {
   photo.dataset.alt = key;
   button.append(photo);
   button.onclick = () => {
-    showGalleryPhoto(index);
-    dialog.showModal();
+    openGallery(photos, index);
   };
   document.querySelector('.photos').append(button);
 }
@@ -145,7 +257,11 @@ expandedPhoto.addEventListener('pointerup', event => {
   if (Math.abs(dx) >= 45 && Math.abs(dx) > Math.abs(dy) * 1.5) stepGallery(dx < 0 ? 1 : -1);
 });
 expandedPhoto.addEventListener('pointercancel', () => { swipeStart = null; });
-dialog.addEventListener('close', () => { swipeStart = null; });
+dialog.addEventListener('close', () => {
+  swipeStart = null;
+  ++galleryRequest;
+  clearGalleryLoading();
+});
 dialog.onclick = event => {
   const bounds = dialog.getBoundingClientRect();
   if (event.target === dialog && (event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom)) dialog.close();
@@ -157,33 +273,12 @@ const stayCollections = {
   twoBedroom: ['house-living', 'house-living', 'house-living', 'house-living', 'house-living'],
   studios: ['studio-living', 'studio-living', 'studio-living', 'studio-living', 'studio-living']
 };
-const collectionDialog = document.querySelector('#stay-collection');
-const collectionPhotos = collectionDialog.querySelector('.collection-photos');
 for (const button of document.querySelectorAll('[data-collection]')) {
   button.onclick = () => {
     const key = button.dataset.collection;
-    const title = locales[document.documentElement.lang][key];
-    collectionDialog.querySelector('h2').textContent = title;
-    collectionPhotos.replaceChildren(...stayCollections[key].map((file, index) => {
-      const figure = document.createElement('figure');
-      const photo = new Image();
-      photo.src = 'img/' + file + '.jpg';
-      photo.alt = title + ' — ' + (index + 1) + ' / 5';
-      photo.loading = index ? 'lazy' : 'eager';
-      const caption = document.createElement('figcaption');
-      caption.textContent = (index + 1) + ' / 5';
-      figure.append(photo, caption);
-      return figure;
-    }));
-    collectionDialog.showModal();
-    collectionDialog.scrollTop = 0;
+    openGallery(stayCollections[key].map(file => [file, key]), 0, key);
   };
 }
-collectionDialog.querySelector('button').onclick = () => collectionDialog.close();
-collectionDialog.addEventListener('click', event => {
-  const bounds = collectionDialog.getBoundingClientRect();
-  if (event.target === collectionDialog && (event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom)) collectionDialog.close();
-});
 function setLang(value) {
   const copy = locales[value] || locales.en;
   document.documentElement.lang = value;
@@ -194,8 +289,13 @@ function setLang(value) {
   const rtl = value === 'he';
   dialog.querySelector('.gallery-left').setAttribute('aria-label', copy[rtl ? 'nextPhoto' : 'previousPhoto']);
   dialog.querySelector('.gallery-right').setAttribute('aria-label', copy[rtl ? 'previousPhoto' : 'nextPhoto']);
-  if (dialog.open) showGalleryPhoto(galleryIndex);
-  collectionDialog.querySelector('.collection-close').setAttribute('aria-label', copy.close);
+  if (dialog.open) showGalleryPhoto(requestedGalleryIndex);
+  if (activeCollection) {
+    galleryTitle.textContent = copy[activeCollection];
+    [...galleryThumbnails.children].forEach((button, index) => {
+      button.setAttribute('aria-label', copy[activePhotos[index][1]] + ' · ' + (index + 1) + ' / ' + activePhotos.length);
+    });
+  }
   logoDialog.querySelector('.logo-close').setAttribute('aria-label', copy.close);
   language.value = value;
   document.querySelectorAll('[data-language]').forEach(button => button.setAttribute('aria-checked', button.dataset.language === value));

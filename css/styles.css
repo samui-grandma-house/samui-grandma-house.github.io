@@ -252,6 +252,8 @@ body:has(dialog[open]){overflow:hidden}
 #gallery-viewer .dismiss svg,#gallery-viewer .gallery-arrow svg{filter:drop-shadow(0 1px 2px #000b)}
 #gallery-viewer .dismiss svg{display:block;width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:2.5;stroke-linecap:round;pointer-events:none}
 #gallery-viewer .gallery-arrow svg{pointer-events:none}
+/* Invisible 92 × 120 px touch targets, centered on the existing chevrons. */
+#gallery-viewer .gallery-arrow::before{content:"";position:absolute;inset:-38px -24px;background:transparent}
 #gallery-viewer button:focus:not(:focus-visible){outline:none}
 #gallery-viewer button:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
 
@@ -281,3 +283,31 @@ button.brand:focus-visible{outline:3px solid var(--ink);outline-offset:4px;borde
 #logo-viewer .logo-status{position:absolute;top:100%;left:0;right:0;margin:12px 0 0;padding:10px 14px;border-radius:12px;background:var(--paper);color:var(--ink);text-align:center;font-size:14px;overflow-wrap:anywhere}
 .clipboard-field{position:fixed;top:0;left:0;width:1px;height:1px;opacity:0;font-size:16px}
 @media(prefers-reduced-motion:no-preference){#logo-viewer[open]{animation:collection-appear 200ms ease-out}}
+
+/* Keep the current photo visible while its replacement loads. */
+#gallery-viewer{min-width:240px;min-height:180px}
+#gallery-viewer>img{transition:opacity 160ms ease}
+#gallery-viewer.is-loading>img{opacity:.4}
+.gallery-status{position:absolute;inset:50% auto auto 50%;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:12px;padding:16px;border-radius:12px;background:var(--paper);color:var(--ink);text-align:center;max-width:80%;width:max-content;box-shadow:0 2px 16px #0003}
+.gallery-status[hidden]{display:none}
+#gallery-viewer.is-loading .gallery-status::before{content:"";width:28px;height:28px;border:3px solid var(--border);border-top-color:var(--ink);border-radius:50%;animation:gallery-spin .8s linear infinite}
+.gallery-status button{padding:8px 16px;border:1px solid var(--border);border-radius:8px;background:var(--card);color:var(--ink)}
+@keyframes gallery-spin{to{transform:rotate(360deg)}}
+@media(prefers-reduced-motion:reduce){#gallery-viewer.is-loading .gallery-status::before{animation:none}}
+
+/* Shared viewer with a fixed house-photo stage and direct thumbnail navigation. */
+#gallery-viewer.house-gallery{width:min(900px,84vw);box-sizing:border-box}
+#viewer-title{font-size:clamp(20px,3vw,30px);line-height:1.2;margin:4px 56px 16px 4px}
+#gallery-viewer.house-gallery>img{width:100%;height:calc(100svh - 280px);max-height:58svh;min-height:120px;object-fit:contain}
+.gallery-thumbnails{display:flex;gap:10px;overflow-x:auto;padding:6px 4px;margin-top:8px}
+.gallery-thumbnails[hidden]{display:none}
+.gallery-thumbnails button{flex:0 0 72px;height:56px;padding:0;border:2px solid transparent;border-radius:6px;overflow:hidden;background:var(--card);opacity:.65}
+.gallery-thumbnails button[aria-pressed="true"]{border-color:var(--accent);opacity:1}
+.gallery-thumbnails button:hover{opacity:1}
+.gallery-thumbnails img{display:block;width:100%;height:100%;object-fit:cover}
+
+.review-stars{color:#f5b301}
+
+.review-summary{display:inline-flex;align-items:center;gap:8px;margin:0 0 28px;color:var(--ink);font-size:clamp(16px,2vw,20px);text-decoration:none}
+.review-summary:hover{text-decoration:underline}
+.review-summary:focus-visible{outline:3px solid var(--accent);outline-offset:5px}

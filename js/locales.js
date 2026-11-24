@@ -1,5 +1,19 @@
 const locales = {
   en: {
+    reviewSummary: "4.6 / 5 · 27 Google reviews",
+    bougainvilleaPhoto: "Tropical garden with bougainvillea",
+    rockySunsetPhoto: "Sunset over a rocky shore",
+    ripplingSunsetPhoto: "Sunset over rippling seas",
+    sereneSunsetPhoto: "Sunset over a serene ocean",
+    plumeriaPhoto: "Plumeria blossoms at sunset",
+    childrenSunsetPhoto: "Children watching the sunset sea",
+    coconutsPhoto: "Coconuts by the blue lagoon",
+    sailboatPhoto: "Sailboat and island",
+
+    photoLoading: "Loading photo…",
+    photoLoadError: "Photo could not be loaded.",
+    retryPhoto: "Retry",
+
     beachPhoto: "Beach and sea",
     sunsetPhoto: "Sunset by Big Buddha",
     welcomePhoto: "Garden welcome sign",
@@ -28,7 +42,7 @@ const locales = {
     home: "Home",
     info: "Info",
     gallery: "Gallery",
-    galleryTitle: "Grandma's Houses & Garden",
+    galleryTitle: "Nature, Serenity & Sea at Grandma's House",
     houses: "Houses",
     studio: "Studio",
     map: "Map",
@@ -55,6 +69,20 @@ const locales = {
     palms: "Coastal palms"
   },
   th: {
+    reviewSummary: "4.6 / 5 · 27 รีวิวบน Google",
+    bougainvilleaPhoto: "สวนเขตร้อนกับดอกเฟื่องฟ้า",
+    rockySunsetPhoto: "พระอาทิตย์ตกเหนือชายฝั่งหิน",
+    ripplingSunsetPhoto: "พระอาทิตย์ตกเหนือระลอกคลื่น",
+    sereneSunsetPhoto: "พระอาทิตย์ตกเหนือทะเลอันสงบ",
+    plumeriaPhoto: "ดอกลีลาวดียามพระอาทิตย์ตก",
+    childrenSunsetPhoto: "เด็ก ๆ ชมทะเลยามพระอาทิตย์ตก",
+    coconutsPhoto: "มะพร้าวริมลากูนสีฟ้า",
+    sailboatPhoto: "เรือใบและเกาะ",
+
+    photoLoading: "กำลังโหลดรูปภาพ…",
+    photoLoadError: "ไม่สามารถโหลดรูปภาพได้",
+    retryPhoto: "ลองอีกครั้ง",
+
     beachPhoto: "ชายหาดและทะเล",
     sunsetPhoto: "พระอาทิตย์ตกใกล้วัดพระใหญ่",
     welcomePhoto: "ป้ายต้อนรับในสวน",
@@ -110,6 +138,20 @@ const locales = {
     palms: "ต้นมะพร้าวริมทะเล"
   },
   ru: {
+    reviewSummary: "4,6 / 5 · 27 отзывов в Google",
+    bougainvilleaPhoto: "Тропический сад с бугенвиллией",
+    rockySunsetPhoto: "Закат над каменистым берегом",
+    ripplingSunsetPhoto: "Закат над морскими волнами",
+    sereneSunsetPhoto: "Закат над спокойным морем",
+    plumeriaPhoto: "Цветы плюмерии на закате",
+    childrenSunsetPhoto: "Дети у моря на закате",
+    coconutsPhoto: "Кокосы у голубой лагуны",
+    sailboatPhoto: "Парусник и остров",
+
+    photoLoading: "Загрузка фото…",
+    photoLoadError: "Не удалось загрузить фото.",
+    retryPhoto: "Повторить",
+
     beachPhoto: "Пляж и море",
     sunsetPhoto: "Закат у Большого Будды",
     welcomePhoto: "Приветственная вывеска в саду",
@@ -165,6 +207,20 @@ const locales = {
     palms: "Пальмы у моря"
   },
   fr: {
+    reviewSummary: "4,6 / 5 · 27 avis Google",
+    bougainvilleaPhoto: "Jardin tropical et bougainvilliers",
+    rockySunsetPhoto: "Coucher de soleil sur la côte rocheuse",
+    ripplingSunsetPhoto: "Coucher de soleil sur les flots",
+    sereneSunsetPhoto: "Coucher de soleil sur une mer paisible",
+    plumeriaPhoto: "Fleurs de frangipanier au coucher du soleil",
+    childrenSunsetPhoto: "Enfants face à la mer au coucher du soleil",
+    coconutsPhoto: "Noix de coco au bord du lagon bleu",
+    sailboatPhoto: "Voilier et île",
+
+    photoLoading: "Chargement de la photo…",
+    photoLoadError: "Impossible de charger la photo.",
+    retryPhoto: "Réessayer",
+
     beachPhoto: "Plage et mer",
     sunsetPhoto: "Coucher de soleil près du Grand Bouddha",
     welcomePhoto: "Panneau de bienvenue dans le jardin",
@@ -220,6 +276,20 @@ const locales = {
     palms: "Palmiers en bord de mer"
   },
   de: {
+    reviewSummary: "4,6 / 5 · 27 Google-Bewertungen",
+    bougainvilleaPhoto: "Tropischer Garten mit Bougainvillea",
+    rockySunsetPhoto: "Sonnenuntergang an der Felsküste",
+    ripplingSunsetPhoto: "Sonnenuntergang über den Wellen",
+    sereneSunsetPhoto: "Sonnenuntergang über dem ruhigen Meer",
+    plumeriaPhoto: "Frangipaniblüten im Sonnenuntergang",
+    childrenSunsetPhoto: "Kinder am Meer bei Sonnenuntergang",
+    coconutsPhoto: "Kokosnüsse an der blauen Lagune",
+    sailboatPhoto: "Segelboot und Insel",
+
+    photoLoading: "Foto wird geladen…",
+    photoLoadError: "Das Foto konnte nicht geladen werden.",
+    retryPhoto: "Erneut versuchen",
+
     beachPhoto: "Strand und Meer",
     sunsetPhoto: "Sonnenuntergang beim Großen Buddha",
     welcomePhoto: "Willkommensschild im Garten",
@@ -275,6 +345,20 @@ const locales = {
     palms: "Palmen am Meer"
   },
   he: {
+    reviewSummary: "4.6 / 5 · 27 ביקורות ב-Google",
+    bougainvilleaPhoto: "גן טרופי עם בוגנוויליה",
+    rockySunsetPhoto: "שקיעה מעל חוף סלעי",
+    ripplingSunsetPhoto: "שקיעה מעל גלי הים",
+    sereneSunsetPhoto: "שקיעה מעל ים שליו",
+    plumeriaPhoto: "פרחי פלומריה בשקיעה",
+    childrenSunsetPhoto: "ילדים צופים בים בשקיעה",
+    coconutsPhoto: "אגוזי קוקוס ליד הלגונה הכחולה",
+    sailboatPhoto: "סירת מפרש ואי",
+
+    photoLoading: "טוען תמונה…",
+    photoLoadError: "לא ניתן לטעון את התמונה.",
+    retryPhoto: "ניסיון נוסף",
+
     beachPhoto: "חוף הים",
     sunsetPhoto: "שקיעה ליד הבודהה הגדול",
     welcomePhoto: "שלט קבלת פנים בגינה",
