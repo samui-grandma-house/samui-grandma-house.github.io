@@ -92,7 +92,7 @@ function toggleMenu(open) {
 menu.onclick = () => toggleMenu(!nav.classList.contains('open'));
 nav.onclick = () => toggleMenu(false);
 document.addEventListener('keydown', event => { if (event.key === 'Escape') toggleMenu(false); });
-const photos = [['palm-garden','palms'],['garden-2446','beachPhoto'],['garden-0972','sunsetPhoto'],['flower-covered-house','garden'],['garden-welcome','welcomePhoto'],['tropical-garden-path','pathPhoto'],['house-in-garden','garden'],["bougainvillea-garden", "bougainvilleaPhoto"],["rocky-shore-sunset", "rockySunsetPhoto"],["rippling-sea-sunset", "ripplingSunsetPhoto"],["serene-ocean-sunset", "sereneSunsetPhoto"],["plumeria-sunset", "plumeriaPhoto"],["children-sunset-sea", "childrenSunsetPhoto"],["coconuts-blue-lagoon", "coconutsPhoto"],["sailboat-island", "sailboatPhoto"]];
+const photos = [['garden-welcome','welcomePhoto'],["children-sunset-beach", "childrenSunsetPhoto"],["coconuts-blue-lagoon", "coconutsPhoto"],["rippling-sea-sunset", "ripplingSunsetPhoto"],['palm-garden','palms'],['garden-2446','beachPhoto'],['garden-0972','sunsetPhoto'],['flower-covered-house','garden'],['tropical-garden-path','pathPhoto'],["lush-tropical-garden", "bougainvilleaPhoto"],["rocky-shore-sunset", "rockySunsetPhoto"],["serene-ocean-sunset", "sereneSunsetPhoto"],["plumeria-sunset", "plumeriaPhoto"],["sailboat-island", "sailboatPhoto"]];
 let activePhotos = photos;
 let activeCollection = null;
 let requestedGalleryIndex = 0;
@@ -266,12 +266,12 @@ dialog.onclick = event => {
   const bounds = dialog.getBoundingClientRect();
   if (event.target === dialog && (event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom)) dialog.close();
 };
-// Replace these placeholder paths individually when the final five photos are ready.
+// Photos for each accommodation collection, in display order.
 const stayCollections = {
-  oneBedroom: ['garden-house', 'garden-house', 'garden-house', 'garden-house', 'garden-house'],
-  twinHouse: ['garden-house', 'garden-house', 'garden-house', 'garden-house', 'garden-house'],
-  twoBedroom: ['house-living', 'house-living', 'house-living', 'house-living', 'house-living'],
-  studios: ['studio-living', 'studio-living', 'studio-living', 'studio-living', 'studio-living']
+  oneBedroom: ['private-house-garden-entrance', 'private-house-porch', 'private-house-living-kitchen', 'private-house-interior', 'private-house-living-space', 'private-house-bedroom'],
+  twinHouse: ['twin-house-patio', 'twin-house-kitchen', 'twin-house-living-wood', 'twin-house-bedroom', 'twin-house-living-kitchen', 'twin-house-living-bright'],
+  twoBedroom: ['two-bedroom-exterior', 'two-bedroom-balcony-bedroom', 'two-bedroom-living-kitchen', 'two-bedroom-rattan-bedroom', 'two-bedroom-lounge', 'two-bedroom-bathroom'],
+  studios: ['studio-sea-balcony', 'studio-kitchen-space', 'studio-balcony-living', 'studio-bathroom-corner', 'studio-swan-bedroom', 'studio-oceanview-bedroom']
 };
 for (const button of document.querySelectorAll('[data-collection]')) {
   button.onclick = () => {
