@@ -188,7 +188,11 @@ body:has(dialog[open]){overflow:hidden}
 }
 .controls #language,.controls #theme{display:flex}
 #language-flag{display:block;width:22px;height:22px;border-radius:50%;object-fit:cover;filter:none}
-#theme-icon{display:block;line-height:1}
+#theme-icon{display:grid;place-items:center;width:24px;height:24px;flex-shrink:0;line-height:1}
+#theme-icon svg{display:block;grid-area:1 / 1;width:24px;height:24px}
+#theme-icon .theme-moon{display:none}
+[data-theme=dark] #theme-icon .theme-sun{display:none}
+[data-theme=dark] #theme-icon .theme-moon{display:block}
 .controls #theme:focus-visible,.controls #menu:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
 @media(max-width:600px){
   header{display:flex;flex-wrap:nowrap;gap:8px;padding:10px 12px}
@@ -260,7 +264,7 @@ body:has(dialog[open]){overflow:hidden}
 /* Clip the loading shimmer inside the badge, preserving its yellow border. */
 .badge::before{opacity:1;transition:opacity .35s ease}
 .badge.is-loading::before,.badge.load-failed::before{opacity:0}
-.badge::after{content:"";position:absolute;inset:0;border-radius:50%;pointer-events:none;background:linear-gradient(105deg,#eee8d7 20%,#fffdf5 45%,#eee8d7 70%);background-size:250% 100%;opacity:0;visibility:hidden;transition:opacity .35s ease,visibility 0s linear .35s}
+.badge::after{content:"";position:absolute;inset:0;border-radius:50%;pointer-events:none;background:linear-gradient(105deg,#d8bd72 20%,#fff8dc 45%,#d8bd72 70%);background-size:250% 100%;opacity:0;visibility:hidden;transition:opacity .35s ease,visibility 0s linear .35s}
 .badge.is-loading::after{opacity:1;visibility:visible;transition:none;animation:logo-shimmer 1.6s ease-in-out infinite}
 @keyframes logo-shimmer{from{background-position:150% 0}to{background-position:-100% 0}}
 @media(prefers-reduced-motion:reduce){.badge.is-loading::after{animation:none}}

@@ -92,7 +92,7 @@ function toggleMenu(open) {
 menu.onclick = () => toggleMenu(!nav.classList.contains('open'));
 nav.onclick = () => toggleMenu(false);
 document.addEventListener('keydown', event => { if (event.key === 'Escape') toggleMenu(false); });
-const photos = [['garden-welcome','welcomePhoto'],["children-sunset-beach", "childrenSunsetPhoto"],["coconuts-blue-lagoon", "coconutsPhoto"],["rippling-sea-sunset", "ripplingSunsetPhoto"],['palm-garden','palms'],['garden-2446','beachPhoto'],['garden-0972','sunsetPhoto'],['flower-covered-house','garden'],['tropical-garden-path','pathPhoto'],["lush-tropical-garden", "bougainvilleaPhoto"],["rocky-shore-sunset", "rockySunsetPhoto"],["serene-ocean-sunset", "sereneSunsetPhoto"],["plumeria-sunset", "plumeriaPhoto"],["sailboat-island", "sailboatPhoto"]];
+const photos = [['garden-welcome','welcomePhoto'],["turquoise-sea-balcony", "turquoiseBalconyPhoto"],["coconuts-blue-lagoon", "coconutsPhoto"],["rippling-sea-sunset", "ripplingSunsetPhoto"],['palm-garden','palms'],['garden-2446','beachPhoto'],['garden-0972','sunsetPhoto'],['flower-covered-house','garden'],['tropical-garden-path','pathPhoto'],["lush-tropical-garden", "bougainvilleaPhoto"],["rocky-shore-sunset", "rockySunsetPhoto"],["serene-ocean-sunset", "sereneSunsetPhoto"],["plumeria-sunset", "plumeriaPhoto"],["sailboat-island", "sailboatPhoto"]];
 let activePhotos = photos;
 let activeCollection = null;
 let requestedGalleryIndex = 0;
@@ -314,7 +314,6 @@ function setLang(value) {
 }
 function applyTheme(value) {
   document.documentElement.dataset.theme = value;
-  document.querySelector('#theme-icon').textContent = value === 'dark' ? '🌙' : '☀️';
   theme.setAttribute('aria-pressed', value === 'dark');
   localStorage.setItem('theme',value);
 }

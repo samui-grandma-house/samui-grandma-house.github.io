@@ -6,7 +6,7 @@ const locales = {
     ripplingSunsetPhoto: "Sunset over rippling seas",
     sereneSunsetPhoto: "Sunset over a serene ocean",
     plumeriaPhoto: "Plumeria blossoms at sunset",
-    childrenSunsetPhoto: "Children watching the sunset sea",
+    turquoiseBalconyPhoto: "Balcony overlooking the turquoise sea",
     coconutsPhoto: "Coconuts by the blue lagoon",
     sailboatPhoto: "Sailboat and island",
 
@@ -75,7 +75,7 @@ const locales = {
     ripplingSunsetPhoto: "พระอาทิตย์ตกเหนือระลอกคลื่น",
     sereneSunsetPhoto: "พระอาทิตย์ตกเหนือทะเลอันสงบ",
     plumeriaPhoto: "ดอกลีลาวดียามพระอาทิตย์ตก",
-    childrenSunsetPhoto: "เด็ก ๆ ชมทะเลยามพระอาทิตย์ตก",
+    turquoiseBalconyPhoto: "ระเบียงมองเห็นทะเลสีเทอร์ควอยซ์",
     coconutsPhoto: "มะพร้าวริมลากูนสีฟ้า",
     sailboatPhoto: "เรือใบและเกาะ",
 
@@ -144,7 +144,7 @@ const locales = {
     ripplingSunsetPhoto: "Закат над морскими волнами",
     sereneSunsetPhoto: "Закат над спокойным морем",
     plumeriaPhoto: "Цветы плюмерии на закате",
-    childrenSunsetPhoto: "Дети у моря на закате",
+    turquoiseBalconyPhoto: "Балкон с видом на бирюзовое море",
     coconutsPhoto: "Кокосы у голубой лагуны",
     sailboatPhoto: "Парусник и остров",
 
@@ -213,7 +213,7 @@ const locales = {
     ripplingSunsetPhoto: "Coucher de soleil sur les flots",
     sereneSunsetPhoto: "Coucher de soleil sur une mer paisible",
     plumeriaPhoto: "Fleurs de frangipanier au coucher du soleil",
-    childrenSunsetPhoto: "Enfants face à la mer au coucher du soleil",
+    turquoiseBalconyPhoto: "Balcon avec vue sur la mer turquoise",
     coconutsPhoto: "Noix de coco au bord du lagon bleu",
     sailboatPhoto: "Voilier et île",
 
@@ -282,7 +282,7 @@ const locales = {
     ripplingSunsetPhoto: "Sonnenuntergang über den Wellen",
     sereneSunsetPhoto: "Sonnenuntergang über dem ruhigen Meer",
     plumeriaPhoto: "Frangipaniblüten im Sonnenuntergang",
-    childrenSunsetPhoto: "Kinder am Meer bei Sonnenuntergang",
+    turquoiseBalconyPhoto: "Balkon mit Blick auf das türkisfarbene Meer",
     coconutsPhoto: "Kokosnüsse an der blauen Lagune",
     sailboatPhoto: "Segelboot und Insel",
 
@@ -351,7 +351,7 @@ const locales = {
     ripplingSunsetPhoto: "שקיעה מעל גלי הים",
     sereneSunsetPhoto: "שקיעה מעל ים שליו",
     plumeriaPhoto: "פרחי פלומריה בשקיעה",
-    childrenSunsetPhoto: "ילדים צופים בים בשקיעה",
+    turquoiseBalconyPhoto: "מרפסת המשקיפה על ים בצבע טורקיז",
     coconutsPhoto: "אגוזי קוקוס ליד הלגונה הכחולה",
     sailboatPhoto: "סירת מפרש ואי",
 
