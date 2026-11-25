@@ -278,10 +278,10 @@ dialog.onclick = event => {
 };
 // Photos for each accommodation collection, in display order.
 const stayCollections = {
-  oneBedroom: ['private-house-garden-entrance', 'private-house-porch', 'private-house-living-kitchen', 'private-house-interior', 'private-house-living-space', 'private-house-bedroom'],
-  twinHouse: ['twin-house-patio', 'twin-house-kitchen', 'twin-house-living-wood', 'twin-house-bedroom', 'twin-house-living-kitchen', 'twin-house-living-bright'],
-  twoBedroom: ['two-bedroom-exterior', 'two-bedroom-balcony-bedroom', 'two-bedroom-living-kitchen', 'two-bedroom-rattan-bedroom', 'two-bedroom-lounge', 'two-bedroom-bathroom'],
-  studios: ['studio-sea-balcony', 'studio-kitchen-space', 'studio-balcony-living', 'studio-bathroom-corner', 'studio-swan-bedroom', 'studio-oceanview-bedroom']
+  oneBedroom: ['private-house-garden-entrance', 'private-house-porch', 'private-house-living-kitchen', 'private-house-interior', 'private-house-living-space', 'private-house-bedroom', 'private-house-bougainvillea-entrance'],
+  twinHouse: ['twin-house-wicker-balcony', 'twin-house-kitchen', 'twin-house-living-wood', 'twin-house-bedroom', 'twin-house-living-kitchen', 'twin-house-living-bright', 'twin-house-wicker-interior'],
+  twoBedroom: ['two-bedroom-exterior', 'two-bedroom-balcony-bedroom', 'two-bedroom-living-kitchen', 'two-bedroom-rattan-bedroom', 'two-bedroom-lounge', 'two-bedroom-bathroom', 'two-bedroom-floral-pass-through'],
+  studios: ['studio-bougainvillea-balconies', 'studio-sea-balcony', 'studio-kitchen-space', 'studio-balcony-living', 'studio-bathroom-corner', 'studio-swan-bedroom', 'studio-oceanview-bedroom']
 };
 for (const button of document.querySelectorAll('[data-collection]')) {
   button.onclick = () => {
