@@ -288,7 +288,8 @@ button.brand:focus-visible{outline:3px solid var(--ink);outline-offset:4px;borde
 #logo-viewer .logo-email:focus-visible{outline:3px solid var(--accent);outline-offset:4px}
 #logo-viewer .logo-status{position:absolute;top:100%;left:0;right:0;margin:12px 0 0;padding:10px 14px;border-radius:12px;background:var(--paper);color:var(--ink);text-align:center;font-size:14px;overflow-wrap:anywhere}
 .clipboard-field{position:fixed;top:0;left:0;width:1px;height:1px;opacity:0;font-size:16px}
-@media(prefers-reduced-motion:no-preference){#logo-viewer[open]{animation:collection-appear 200ms ease-out}}
+/* Animate only the artwork: transforming the dialog would re-anchor its fixed close button. */
+@media(prefers-reduced-motion:no-preference){#logo-viewer[open] .logo-email{animation:collection-appear 200ms ease-out}}
 
 /* Keep the current photo visible while its replacement loads. */
 #gallery-viewer{min-width:240px;min-height:180px}
