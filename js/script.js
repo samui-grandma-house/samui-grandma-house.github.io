@@ -231,10 +231,22 @@ function stepGallery(direction) {
 }
 for (const [index, [file,key]] of photos.slice(0, 4).entries()) {
   const button = document.createElement('button');
+  button.type = 'button';
+  button.classList.add('is-loading');
+  button.setAttribute('aria-busy', 'true');
   const photo = new Image();
-  photo.src = 'img/' + file + '.jpg';
+  const finishLoading = () => {
+    button.classList.remove('is-loading');
+    button.setAttribute('aria-busy', 'false');
+  };
+  photo.addEventListener('load', async () => {
+    try { await photo.decode(); } catch { /* Loaded images can render without decode(). */ }
+    finishLoading();
+  }, { once: true });
+  photo.addEventListener('error', finishLoading, { once: true });
   photo.loading = 'lazy';
   photo.dataset.alt = key;
+  photo.src = 'img/' + file + '.jpg';
   button.append(photo);
   button.onclick = () => {
     openGallery(photos, index);
