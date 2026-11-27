@@ -229,21 +229,30 @@ galleryRetry.onclick = () => showGalleryPhoto(requestedGalleryIndex);
 function stepGallery(direction) {
   showGalleryPhoto(requestedGalleryIndex + (document.documentElement.dir === 'rtl' ? -direction : direction));
 }
-for (const [index, [file,key]] of photos.slice(0, 4).entries()) {
-  const button = document.createElement('button');
-  button.type = 'button';
+function addPhotoShimmer(button, photo) {
   button.classList.add('is-loading');
   button.setAttribute('aria-busy', 'true');
-  const photo = new Image();
   const finishLoading = () => {
     button.classList.remove('is-loading');
     button.setAttribute('aria-busy', 'false');
   };
-  photo.addEventListener('load', async () => {
+  const revealPhoto = async () => {
     try { await photo.decode(); } catch { /* Loaded images can render without decode(). */ }
     finishLoading();
-  }, { once: true });
+  };
+  photo.addEventListener('load', revealPhoto, { once: true });
   photo.addEventListener('error', finishLoading, { once: true });
+  // Static cover photos may already have loaded before this script runs.
+  if (photo.complete && photo.getAttribute('src')) {
+    if (photo.naturalWidth) revealPhoto();
+    else finishLoading();
+  }
+}
+for (const [index, [file,key]] of photos.slice(0, 4).entries()) {
+  const button = document.createElement('button');
+  button.type = 'button';
+  const photo = new Image();
+  addPhotoShimmer(button, photo);
   photo.loading = 'lazy';
   photo.dataset.alt = key;
   photo.src = 'img/' + file + '.jpg';
@@ -296,6 +305,7 @@ const stayCollections = {
   studios: ['studio-bougainvillea-balconies', 'studio-sea-balcony', 'studio-kitchen-space', 'studio-balcony-living', 'studio-bathroom-corner', 'studio-swan-bedroom', 'studio-oceanview-bedroom']
 };
 for (const button of document.querySelectorAll('[data-collection]')) {
+  addPhotoShimmer(button, button.querySelector('img'));
   button.onclick = () => {
     const key = button.dataset.collection;
     openGallery(stayCollections[key].map(file => [file, key]), 0, key);

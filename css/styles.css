@@ -220,13 +220,15 @@ body:has(dialog[open]){overflow:hidden}
 @keyframes map-shimmer{from{background-position:150% 0}to{background-position:-100% 0}}
 @media(prefers-reduced-motion:reduce){.map-frame.is-loading::after{animation:none}}
 
-/* Each gallery preview reveals independently once its photo is decoded. */
+/* Each photo preview reveals independently once its image is decoded. */
 .photos button{position:relative;aspect-ratio:1.3;background:var(--card)}
-.photos button::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(105deg,var(--card) 20%,var(--border) 45%,var(--card) 70%);background-size:250% 100%;opacity:0;visibility:hidden;transition:opacity .45s ease,visibility 0s linear .45s}
-.photos button.is-loading::after{opacity:1;visibility:visible;transition:none;animation:map-shimmer 2.4s ease-in-out infinite}
+.photos button::after,.stay-photo::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(105deg,var(--card) 20%,var(--border) 45%,var(--card) 70%);background-size:250% 100%;opacity:0;visibility:hidden;transition:opacity .45s ease,visibility 0s linear .45s}
+.photos button.is-loading::after,.stay-photo.is-loading::after{opacity:1;visibility:visible;transition:none;animation:map-shimmer 2.4s ease-in-out infinite}
 .photos img{transition:transform .4s,opacity .45s ease}
-.photos button.is-loading img{opacity:0}
-@media(prefers-reduced-motion:reduce){.photos button.is-loading::after{animation:none}.photos button::after,.photos img{transition:none}}
+.stay-photo img{transition:transform 250ms ease,opacity .45s ease}
+.stay-photo .photo-hint{z-index:1}
+.photos button.is-loading img,.stay-photo.is-loading img{opacity:0}
+@media(prefers-reduced-motion:reduce){.photos button.is-loading::after,.stay-photo.is-loading::after{animation:none}.photos button::after,.stay-photo::after,.photos img,.stay-photo img{transition:none}}
 
 /* Hebrew content follows the reading direction; Latin names and contacts retain theirs. */
 .brand,.contact-card>a,.site-footer p,blockquote p[lang="en"]{direction:ltr}
